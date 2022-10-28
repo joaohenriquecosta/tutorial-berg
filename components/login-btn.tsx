@@ -1,8 +1,9 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function LoginButton(): JSX.Element {
-  const { data: session } = useSession();
-  if (session) {
+  const { data: session, status } = useSession();
+
+  if (status === "authenticated") {
     return (
       <>
         Signed in as {session?.user?.email} <br />
@@ -15,6 +16,7 @@ export default function LoginButton(): JSX.Element {
       </>
     );
   }
+  
   return (
     <>
       Not signed in <br />
