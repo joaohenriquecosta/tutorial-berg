@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
+import NavBar from "./nav"
 
 // The approach used in this component shows how to built a sign in and sign out
 // component that works on pages which support both client and server side
@@ -49,20 +50,9 @@ export default function Header() {
           )}
         </p>
       </div>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="/create-user">
-              Create User
-            </Link>
-          </li>
-        </ul>
-      </nav>
+
+      <NavBar />
+
     </header>
   )
 }

@@ -1,6 +1,5 @@
 import Head from "next/head";
-import Nav from "../components/nav";
-import LoginBtn from "../components/login-btn";
+import Layout from "../components/layout";
 
 export default function Home(): JSX.Element {
   return (
@@ -8,10 +7,9 @@ export default function Home(): JSX.Element {
       <Head>
         <title>Tutorial Berg</title>
       </Head>
-
-      <Nav />
-
-      <LoginBtn />
+      <Layout>
+        
+      </Layout>
     </div>
   );
 }

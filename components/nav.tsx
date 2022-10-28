@@ -1,13 +1,14 @@
 import Link from "next/link";
+import LoginButton from "./login-btn";
 
 const links = [
   {
-    href: "https://instagram.com/joaohenrique_costa",
-    label: "Instagram",
+    href: "#",
+    label: "Users",
   },
   {
-    href: "https://api.whatsapp.com/send?phone=5516982441889",
-    label: "Whatsapp",
+    href: "#",
+    label: "Appointments",
   },
 ];
 
@@ -32,6 +33,7 @@ export default function NavBar(): JSX.Element {
             <LoginBtn />
           </li> */}
         </ul>
+        <LoginButton />
       </ul>
     </nav>
   );
