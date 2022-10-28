@@ -9,18 +9,10 @@ interface OkResType {
   message: string;
 }
 
-/* interface OkResType {
-  _id: string;
-  name: string;
-  email: string;
-  cellphone: string;
-  teacher: string;
-} */
-
-export default async (
+export default async function createUser(
   req: NextApiRequest,
   res: NextApiResponse<ErrResType | OkResType>
-): Promise<void> => {
+): Promise<void> {
   if (req.method === "POST") {
     const { name, email, cellphone, teacher } = req.body;
 
@@ -39,10 +31,10 @@ export default async (
     });
 
     if (response.acknowledged) {
-      res.status(200).json({ message: "Successful user creation."});
+      res.status(200).json({ message: "Successful user creation." });
     }
   } else {
     res.status(400).json({ error: "Wrong request method." });
     return;
   }
-};
+}

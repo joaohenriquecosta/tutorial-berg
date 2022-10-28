@@ -1,25 +1,30 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, MongoClientOptions } from "mongodb";
 
 interface ConnectType {
   db: Db;
   client: MongoClient;
 }
 
-const uri_env = process.env.MONGODB_URI;
-const uri_literal =
-  "mongodb+srv://Palinha:xfcQEJMb5amwUXCc@cluster0.f8bthtq.mongodb.net/test";
+const uri = process.env.MONGODB_URI as string;
 
-const client = new MongoClient(uri_literal, {
-  //useNewUrlParser: true,
-  //useUnifiedTopology: true,
-});
+// Verify if this options are still necessary making some tests with insomnia
 
-const connect = async (): Promise<ConnectType> => {
+interface mco_type extends MongoClientOptions {
+  useNewUrlParser: boolean;
+  useUnifiedTopology: boolean;
+}
+
+const mongoClientOptions: mco_type = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
+const client = new MongoClient(uri, mongoClientOptions);
+
+export default async function connect(): Promise<ConnectType> {
   // if (client.isConnected()):
   await client.connect();
 
   const db = client.db("ecommerce");
   return { db, client };
-};
-
-export default connect;
+}

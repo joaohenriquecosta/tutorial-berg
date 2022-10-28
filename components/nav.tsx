@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import Link from "next/link";
 
 const links = [
@@ -12,14 +11,13 @@ const links = [
   },
 ];
 
-const Nav: NextPage = () => {
+export default function NavBar(): JSX.Element {
   return (
     <nav>
       <ul className="flex justify-between items-center p-8">
         <li>
           <Link className="text-blue-500 no-underline" href="/">
             Home
-            {/* <a className="text-blue-500 no-underline">Home</a> */}
           </Link>
         </li>
         <ul className="flex justify-between items-center space-x-4">
@@ -30,10 +28,11 @@ const Nav: NextPage = () => {
               </a>
             </li>
           ))}
+          {/* <li>
+            <LoginBtn />
+          </li> */}
         </ul>
       </ul>
     </nav>
   );
-};
-
-export default Nav;
+}
