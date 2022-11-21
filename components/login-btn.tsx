@@ -6,7 +6,7 @@ export default function LoginButton(): JSX.Element {
   if (status === "authenticated") {
     return (
       <>
-        Signed in as {session?.user?.email} <br />
+        Signed in as {session?.user?.email}
         <button
           className="text-1xl bg-blue-400 text-white font-bold py-1 px-4 rounded"
           onClick={() => signOut()}
@@ -16,7 +16,11 @@ export default function LoginButton(): JSX.Element {
       </>
     );
   }
-  
+
+  if (status === "loading") {
+    return <div className="bg-yellow-400 text-black text-2xl">Loading...</div>;
+  }
+
   return (
     <>
       Not signed in <br />

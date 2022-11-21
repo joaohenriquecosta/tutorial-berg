@@ -1,14 +1,14 @@
 import Head from "next/head";
 import Layout from "../components/layout";
 
-export default function Home(): JSX.Element {
+export default function App(): JSX.Element {
   return (
     <div>
       <Head>
-        <title>Tutorial - HOME</title>
+        <title>Tutorial - APP</title>
       </Head>
       <Layout>
-        <h1>This is the HOME page</h1>
+        <h1>This is the APP page</h1>
       </Layout>
     </div>
   );

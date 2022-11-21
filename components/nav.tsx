@@ -21,6 +21,11 @@ export default function NavBar(): JSX.Element {
             Home
           </Link>
         </li>
+        <li>
+          <Link className="text-blue-500 no-underline" href="/app">
+            App
+          </Link>
+        </li>
         <ul className="flex justify-between items-center space-x-4">
           {links.map(({ href, label }) => (
             <li key={`${href}${label}`}>
@@ -29,9 +34,6 @@ export default function NavBar(): JSX.Element {
               </a>
             </li>
           ))}
-          {/* <li>
-            <LoginBtn />
-          </li> */}
         </ul>
         <LoginButton />
       </ul>
