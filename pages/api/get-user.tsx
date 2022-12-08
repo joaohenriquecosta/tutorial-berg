@@ -7,8 +7,6 @@ export default async function getUserByEmail(
   res: NextApiResponse<Error | User>
 ): Promise<void> {
   if (req.method === "GET") {
-    // TO DO: DYNAMIC SEARCH (cellphone, _id, ...)
-    // How to destructure before knowing the key?
     const { email } = req.body;
 
     if (!email) {
