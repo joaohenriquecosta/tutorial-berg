@@ -25,6 +25,6 @@ export default async function connect(): Promise<ConnectType> {
   // if (client.isConnected()):
   await client.connect();
 
-  const db = client.db("ecommerce");
+  const db = client.db("tutorial-berg");
   return { db, client };
 }

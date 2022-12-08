@@ -1,28 +1,49 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connect from "../../lib/mongodb";
-// import InsertOneResult from 'node-modules/mongodb/mongodb.d.ts'
 
-interface ErrResType {
+export interface Error {
   error: string;
 }
-/* 
-interface OkResType {
+
+export interface Appointment {
+  subjectID: string;
+  timeAndDate: string;
+  course: string;
+}
+
+export interface Review {
+  subjectID: string;
+  course: string;
+  timestamp: string;
+  review: string;
+}
+
+export interface User {
   _id: string;
   name: string;
   email: string;
   cellphone: string;
-  teacher: true;
+  teacher: boolean;
   coins: number;
   courses: string[];
-  available_hours: Record<string, number[]>;
+  available_hours: {
+    monday: number[];
+    tuesday: number[];
+    wednesday: number[];
+    thursday: number[];
+    friday: number[];
+  };
   available_locations: string[];
-  reviews: Record<string, unknown>[];
-  appointments: Record<string, unknown>[];
+  reviews: {
+    sent: Review[];
+    received: Review[];
+  };
+  appointments: Appointment[];
 }
- */
+
 export default async function createUser(
   req: NextApiRequest,
-  res: NextApiResponse /* <ErrResType | OkResType> */
+  res: NextApiResponse<Error | User>
 ): Promise<void> {
   if (req.method === "POST") {
     const {
@@ -40,38 +61,36 @@ export default async function createUser(
       return;
     }
 
-    if (teacher) {
-      if (!courses || !available_hours || !available_locations) {
-        res.status(400).json({ error: "Missing body parameter." });
-        return;
-      }
+    if (teacher && (!courses || !available_hours || !available_locations)) {
+      res.status(400).json({ error: "Missing body parameter." });
+      return;
     }
 
     const { db } = await connect();
     const users = db.collection("users");
 
-    const response = await users.insertOne({
-      name,
-      email,
-      cellphone,
-      teacher,
-      coins: 1,
-      courses: courses || [],
-      available_hours: available_hours || {},
-      available_locations: available_locations || [],
-      reviews: [],
-      appointments: [],
-    });
-
-    if (response.acknowledged) {
-      const newId = response.insertedId;
-      const newUser = users.findOne({_id: newId});
-      res.status(200).json(newUser);
-    } else {
-      res.status(400).json({ error: "Could not create user." });
-    }
-  } else {
-    res.status(400).json({ error: "Wrong request method." });
-    return;
+    await users
+      .insertOne({
+        name,
+        email,
+        cellphone,
+        teacher,
+        coins: 1,
+        courses: courses || [],
+        available_hours: available_hours || {},
+        available_locations: available_locations || [],
+        reviews: { sent: [], received: [] },
+        appointments: [],
+      })
+      .then(insertRes => {
+        if (insertRes.acknowledged) {
+          users.findOne({ _id: insertRes.insertedId }).then(findRes => {
+            res.status(200).json(JSON.parse(JSON.stringify(findRes)));
+          });
+        }
+      })
+      .catch(err => {
+        res.status(400).json({ error: err.message });
+      });
   }
 }
