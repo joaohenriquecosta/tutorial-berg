@@ -1,16 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Error, User } from "./create-user";
-import connect from "../../lib/mongodb";
+import type { Error, User } from "../create-user";
+import connect from "../../../lib/mongodb";
 
 export default async function getUserByEmail(
   req: NextApiRequest,
   res: NextApiResponse<Error | User>
 ): Promise<void> {
   if (req.method === "GET") {
-    const { email } = req.body;
+    const { cellphone } = req.body;
 
-    if (!email) {
-      res.status(400).json({ error: "Missing e-mail on request body." });
+    if (!cellphone) {
+      res.status(400).json({ error: "Missing cellphone on request body." });
       return;
     }
 
@@ -18,7 +18,7 @@ export default async function getUserByEmail(
 
     await db
       .collection("users")
-      .findOne({ email: email })
+      .findOne({ cellphone: cellphone })
       .then(findRes => {
         res.status(200).json(JSON.parse(JSON.stringify(findRes)));
       })

@@ -9,6 +9,7 @@ export interface Appointment {
   subjectID: string;
   timeAndDate: string;
   course: string;
+  location: string;
 }
 
 export interface Review {
@@ -67,9 +68,9 @@ export default async function createUser(
     }
 
     const { db } = await connect();
-    const users = db.collection("users");
 
-    await users
+    await db
+      .collection("users")
       .insertOne({
         name,
         email,
@@ -84,9 +85,11 @@ export default async function createUser(
       })
       .then(insertRes => {
         if (insertRes.acknowledged) {
-          users.findOne({ _id: insertRes.insertedId }).then(findRes => {
-            res.status(200).json(JSON.parse(JSON.stringify(findRes)));
-          });
+          db.collection("users")
+            .findOne({ _id: insertRes.insertedId })
+            .then(findRes => {
+              res.status(200).json(JSON.parse(JSON.stringify(findRes)));
+            });
         }
       })
       .catch(err => {
